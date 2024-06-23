@@ -2,7 +2,7 @@ import React from "react";
 
 const AddPropertyButton = () => {
   return (
-    <div className="p-2 text-sm font-semibold rounded-full hover:bg-gray-200 cursor-pointer">
+    <div className="p-2 min-w-fit text-sm font-semibold rounded-full hover:bg-gray-200 cursor-pointer">
       ShareBnb your home
     </div>
   );

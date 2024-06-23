@@ -4,7 +4,7 @@ import { CATEGORIES } from "@/constants/categories";
 
 const Categories = () => {
   return (
-    <div className="pt-3 flex items-center pb-6 space-x-12 cursor-pointer">
+    <div className="pt-3 flex items-center pb-6 space-x-12">
       {CATEGORIES.map((item, index) => (
         <CategoriesItem
           key={index}
