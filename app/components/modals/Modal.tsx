@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CloseIcon from "../icons/CloseIcon";
 
 type ModalProps = {
@@ -13,11 +13,14 @@ type ModalProps = {
 
 const Modal = ({ title, content, isOpen, close }: ModalProps) => {
   const [showModal, setShowModal] = useState(isOpen);
-
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
-    setTimeout(() => close(), 300);
+    setTimeout(() => close(), 600);
   }, [close]);
+
+  useEffect(() => {
+    setShowModal(isOpen);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -26,7 +29,7 @@ const Modal = ({ title, content, isOpen, close }: ModalProps) => {
       <div className="relative w-[90%] md:[80%] lg:w-[700px] my-6 mx-auto h-auto">
         <div
           className={cn(
-            "h-full transform translate-y-0 duration-500 opacity-100",
+            "h-full transform translate-y-0 duration-300 opacity-100",
             {
               "translate-y-full opacity-0": !showModal,
             }
