@@ -1,12 +1,12 @@
 "use client";
 
-import useLoginModal from "@/app/hooks/useLoginModal";
+import useSignupModal from "@/app/hooks/useSignupModal";
 import React from "react";
 import Modal from "./Modal";
 import CustomButton from "../form/CustomButton";
 
-const LoginModal = () => {
-  const loginModal = useLoginModal();
+const SignupModal = () => {
+  const signupModal = useSignupModal();
   const content = (
     <form action="" className="space-y-4">
       <input
@@ -23,20 +23,27 @@ const LoginModal = () => {
         placeholder="Password"
         className="w-full h-[54px] border border-gray-300 rounded-xl px-4"
       />
+      <input
+        type="repeatpassword"
+        name="repeatpassword"
+        id="repeatpassword"
+        placeholder="Repeat Password"
+        className="w-full h-[54px] border border-gray-300 rounded-xl px-4"
+      />
       <div className="p-4 bg-sharebnb text-white rounded-xl opacity-80">
         Error message
       </div>
-      <CustomButton label="Submit" onClick={() => console.log("login")} />
+      <CustomButton label="Submit" onClick={() => console.log("Signup")} />
     </form>
   );
   return (
     <Modal
-      title="Login"
+      title="Signup"
       content={content}
-      isOpen={loginModal.isOpen}
-      close={loginModal.close}
+      isOpen={signupModal.isOpen}
+      close={signupModal.close}
     />
   );
 };
 
-export default LoginModal;
+export default SignupModal;

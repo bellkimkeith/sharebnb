@@ -5,10 +5,12 @@ import MenuIcon from "../icons/MenuIcon";
 import ProfileIcon from "../icons/ProfileIcon";
 import MenuLink from "./MenuLink";
 import useLoginModal from "@/app/hooks/useLoginModal";
+import useSignupModal from "@/app/hooks/useSignupModal";
 
 const ProfileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const loginModal = useLoginModal();
+  const signupModal = useSignupModal();
   return (
     <div className="p-2 relative inline-block border rounded-full">
       <button
@@ -28,7 +30,13 @@ const ProfileNav = () => {
               loginModal.open();
             }}
           />
-          <MenuLink label="Signup" onClick={() => console.log("clicked")} />
+          <MenuLink
+            label="Signup"
+            onClick={() => {
+              setIsOpen(false);
+              signupModal.open();
+            }}
+          />
         </div>
       )}
     </div>

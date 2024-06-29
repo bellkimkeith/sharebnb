@@ -15,7 +15,7 @@ const Modal = ({ title, content, isOpen, close }: ModalProps) => {
   const [showModal, setShowModal] = useState(isOpen);
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
-    setTimeout(() => close(), 600);
+    setTimeout(() => close(), 400);
   }, [close]);
 
   useEffect(() => {
