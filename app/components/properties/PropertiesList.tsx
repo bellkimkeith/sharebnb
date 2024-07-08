@@ -5,6 +5,7 @@ import PropertyItem from "./PropertyItem";
 import { cn } from "@/lib/utils";
 import { json } from "stream/consumers";
 import { error } from "console";
+import apiService from "@/app/services/apiService";
 
 export type PropertyType = {
   id: string;
@@ -18,15 +19,8 @@ const PropertiesList = ({ inOwnerPage }: { inOwnerPage?: boolean }) => {
 
   useEffect(() => {
     const getProperties = async () => {
-      const url = "http://localhost:8000/api/properties/";
-
-      await fetch(url, { method: "GET" })
-        .then((response) => response.json())
-        .then((json) => {
-          console.log("json", json);
-          setProperties(json.data);
-        })
-        .catch((error) => console.log(error));
+      const properties = await apiService.get("/api/properties/");
+      setProperties(properties.data);
     };
     getProperties();
   }, []);
