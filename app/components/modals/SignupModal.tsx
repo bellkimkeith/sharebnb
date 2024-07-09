@@ -7,6 +7,7 @@ import CustomButton from "../form/CustomButton";
 import { useRouter } from "next/navigation";
 import apiService from "@/app/services/apiService";
 import { error } from "console";
+import { handleLogin } from "@/app/lib/actions";
 
 const SignupModal = () => {
   const router = useRouter();
@@ -29,10 +30,10 @@ const SignupModal = () => {
     );
 
     if (response.access) {
-      // handleLogin()
+      handleLogin(response.user.pk, response.access, response.refresh);
       signupModal.close();
-      router.push("/");
       setErrors([]);
+      router.push("/");
     } else {
       const responseErrors: string[] = [];
       for (const [key, value] of Object.entries(response)) {
@@ -69,14 +70,16 @@ const SignupModal = () => {
         placeholder="Repeat Password"
         className="w-full h-[54px] border border-gray-300 rounded-xl px-4"
       />
-      {errors.map((error, index) => (
-        <div
-          key={index}
-          className="p-4 bg-sharebnb text-white rounded-xl opacity-80"
-        >
-          {error}
-        </div>
-      ))}
+      {errors &&
+        errors.length > 0 &&
+        errors.map((error, index) => (
+          <div
+            key={index}
+            className="p-4 bg-sharebnb text-white rounded-xl opacity-80"
+          >
+            {error}
+          </div>
+        ))}
 
       <CustomButton label="Submit" onClick={handleSignUpSubmit} />
     </form>

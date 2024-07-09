@@ -4,8 +4,10 @@ import React from "react";
 import SearchFilter from "./SearchFilter";
 import ProfileNav from "./ProfileNav";
 import AddPropertyButton from "./AddPropertyButton";
+import { getUserId } from "@/app/lib/actions";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const userId = await getUserId();
   return (
     <nav className="w-full fixed top-0 left-0 py-6 border-b-[0.3px] bg-white bg-clip-padding backdrop-filter backdrop-blur-3xl bg-opacity-0 z-10">
       <div className="max-w-[1500px] mx-auto px-6">
@@ -22,7 +24,7 @@ const Navbar = () => {
           </div>
           <div className="flex items-center space-x-6">
             <AddPropertyButton />
-            <ProfileNav />
+            <ProfileNav userId={userId} />
           </div>
         </div>
       </div>

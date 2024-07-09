@@ -6,8 +6,13 @@ import ProfileIcon from "../icons/ProfileIcon";
 import MenuLink from "./MenuLink";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useSignupModal from "@/app/hooks/useSignupModal";
+import LogoutButton from "../buttons/LogoutButton";
 
-const ProfileNav = () => {
+type ProfileNavProps = {
+  userId: string | undefined;
+};
+
+const ProfileNav = ({ userId }: ProfileNavProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const loginModal = useLoginModal();
   const signupModal = useSignupModal();
@@ -23,20 +28,26 @@ const ProfileNav = () => {
 
       {isOpen && (
         <div className="flex flex-col cursor-pointer w-[220px] absolute top-[50px] right-0 bg-white border rounded-xl shadow-md">
-          <MenuLink
-            label="Login"
-            onClick={() => {
-              setIsOpen(false);
-              loginModal.open();
-            }}
-          />
-          <MenuLink
-            label="Signup"
-            onClick={() => {
-              setIsOpen(false);
-              signupModal.open();
-            }}
-          />
+          {!userId ? (
+            <>
+              <MenuLink
+                label="Login"
+                onClick={() => {
+                  setIsOpen(false);
+                  loginModal.open();
+                }}
+              />
+              <MenuLink
+                label="Signup"
+                onClick={() => {
+                  setIsOpen(false);
+                  signupModal.open();
+                }}
+              />
+            </>
+          ) : (
+            <LogoutButton />
+          )}
         </div>
       )}
     </div>
