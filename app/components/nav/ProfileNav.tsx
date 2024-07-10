@@ -46,7 +46,7 @@ const ProfileNav = ({ userId }: ProfileNavProps) => {
               />
             </>
           ) : (
-            <LogoutButton />
+            <LogoutButton onClick={() => setIsOpen(false)} />
           )}
         </div>
       )}

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import SearchFilter from "./SearchFilter";
 import ProfileNav from "./ProfileNav";
 import AddPropertyButton from "./AddPropertyButton";
@@ -23,7 +23,7 @@ const Navbar = async () => {
             <SearchFilter />
           </div>
           <div className="flex items-center space-x-6">
-            <AddPropertyButton />
+            <AddPropertyButton userId={userId} />
             <ProfileNav userId={userId} />
           </div>
         </div>
