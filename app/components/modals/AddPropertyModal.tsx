@@ -16,6 +16,7 @@ type PropertyModalFormData = {
   description: string;
   price: string;
   bedrooms: string;
+  bathrooms: string;
   guests: string;
   country: SelectCountryValue | undefined;
   image: File | null;
@@ -29,10 +30,12 @@ const AddPropertyModal = () => {
     description: "",
     price: "",
     bedrooms: "",
+    bathrooms: "",
     guests: "",
     country: undefined,
     image: null,
   });
+  const [errors, setErrors] = useState<string[]>([]);
   const addPropertyModal = usePropertyModal();
   const router = useRouter();
 
@@ -57,10 +60,11 @@ const AddPropertyModal = () => {
     if (isFormFilled) {
       const data = new FormData();
       data.append("category", formData.category);
-      data.append("name", formData.name);
+      data.append("title", formData.name);
       data.append("description", formData.description);
-      data.append("price", formData.price);
+      data.append("price_per_night", formData.price);
       data.append("bedrooms", formData.bedrooms);
+      data.append("bathrooms", formData.bathrooms);
       data.append("guests", formData.guests);
       data.append("country", formData.country?.label!);
       data.append("country_code", formData.country?.value!);
@@ -72,7 +76,19 @@ const AddPropertyModal = () => {
         router.push("/");
         addPropertyModal.close();
       } else {
-        console.log("error");
+        const responseErrors: any = Object.values(response)[0];
+        const parsedErrors = JSON.parse(responseErrors);
+        const formattedErrors: string[] = [];
+        Object.keys(parsedErrors).map((key) => {
+          const formattedKey = key
+            .toLowerCase()
+            .replace(/_/g, " ")
+            .replace(/(?: |\b)(\w)/g, function (key) {
+              return key.toUpperCase();
+            });
+          formattedErrors.push(`${formattedKey} field is required`);
+        });
+        setErrors(formattedErrors);
       }
     }
   };
@@ -157,6 +173,18 @@ const AddPropertyModal = () => {
               />
             </div>
             <div className="flex flex-col space-y-2">
+              <label htmlFor="bathroom">Bathrooms</label>
+              <input
+                type="number"
+                name="bathroom"
+                value={formData.bathrooms}
+                onChange={(e) =>
+                  setFormData({ ...formData, bathrooms: e.target.value })
+                }
+                className="w-full p-4 rounded-xl border border-gray-600"
+              />
+            </div>
+            <div className="flex flex-col space-y-2">
               <label htmlFor="guests">Maximum number of guests</label>
               <input
                 type="number"
@@ -212,6 +240,17 @@ const AddPropertyModal = () => {
               </div>
             )}
           </div>
+
+          {errors.map((error, index) => {
+            return (
+              <div
+                key={index}
+                className="p-2 mb-2 bg-sharebnb text-white text-xs rounded-xl opacity-80"
+              >
+                {error}
+              </div>
+            );
+          })}
 
           <CustomButton
             className="mb-2 bg-gray-800 hover:bg-gray-600"
