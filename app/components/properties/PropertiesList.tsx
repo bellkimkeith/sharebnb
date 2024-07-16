@@ -3,15 +3,23 @@
 import React, { useEffect, useState } from "react";
 import PropertyItem from "./PropertyItem";
 import { cn } from "@/lib/utils";
-import { json } from "stream/consumers";
-import { error } from "console";
 import apiService from "@/app/services/apiService";
+
+type UserType = {
+  name: string;
+  avatar_url: string;
+};
 
 export type PropertyType = {
   id: string;
   price_per_night: number;
   image_url: string;
   title: string;
+  description: string;
+  bathrooms: string;
+  bedrooms: string;
+  guests: string;
+  landlord: UserType;
 };
 
 const PropertiesList = ({ inOwnerPage }: { inOwnerPage?: boolean }) => {

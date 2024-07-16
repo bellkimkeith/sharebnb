@@ -74,6 +74,10 @@ const AddPropertyModal = () => {
 
       if (response.success) {
         router.push("/");
+        // test later to get current data
+        // router.refresh();
+        // revalidatePath("/dashboard/invoices");
+        // redirect('/dashboard/invoices');
         addPropertyModal.close();
       } else {
         const responseErrors: any = Object.values(response)[0];
