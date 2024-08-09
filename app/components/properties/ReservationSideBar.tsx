@@ -1,9 +1,9 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { PropertyType } from "./PropertiesList";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { Range } from "react-date-range";
-import { differenceInDays, format } from "date-fns";
+import { differenceInDays, eachDayOfInterval, format } from "date-fns";
 import DatePicker from "../form/DatePicker";
 import apiService from "@/app/services/apiService";
 
@@ -20,6 +20,15 @@ type ReservationType = {
   dateRange: Range;
   minDate: Date;
   guests: string;
+};
+
+type ReservationListItemType = {
+  id: string;
+  start_date: string;
+  end_date: string;
+  number_of_nights: string;
+  total_price: string;
+  property: PropertyType;
 };
 
 const ReservationSideBar = ({
@@ -42,6 +51,7 @@ const ReservationSideBar = ({
   };
   const guestsOptions = createGuestsOptions();
   const loginModal = useLoginModal();
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [reservationData, setReservationData] = useState<ReservationType>({
     fee: "0",
     nights: "1",
@@ -50,6 +60,23 @@ const ReservationSideBar = ({
     minDate: new Date(),
     guests: "1",
   });
+
+  const getReservations = useCallback(async () => {
+    const reservations = await apiService.get(
+      `/api/properties/${property.id}/reservations/`
+    );
+    let dates: Date[] = [];
+
+    reservations.forEach((reservation: ReservationListItemType) => {
+      const range = eachDayOfInterval({
+        start: new Date(reservation.start_date),
+        end: new Date(reservation.end_date),
+      });
+      dates = [...dates, ...range];
+    });
+
+    setBookedDates(dates);
+  }, [property.id]);
 
   const selectDateRange = (selection: any) => {
     const newStartDate = new Date(selection.startDate);
@@ -105,6 +132,7 @@ const ReservationSideBar = ({
   };
 
   useEffect(() => {
+    getReservations();
     if (
       reservationData.dateRange.startDate &&
       reservationData.dateRange.endDate
@@ -135,7 +163,7 @@ const ReservationSideBar = ({
         }));
       }
     }
-  }, [reservationData.dateRange, property.price_per_night]);
+  }, [reservationData.dateRange, property.price_per_night, getReservations]);
 
   return (
     <aside className="col-span-2 rounded-xl border border-gray-300 shadow-xl p-6 mt-6 mx-auto">
@@ -143,6 +171,7 @@ const ReservationSideBar = ({
         <strong>₱{property.price_per_night}</strong> per night
       </h2>
       <DatePicker
+        bookedDates={bookedDates}
         value={reservationData.dateRange}
         onChange={(value) => selectDateRange(value.selection)}
       />
