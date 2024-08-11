@@ -9,8 +9,6 @@ const OwnerPage = async ({ params }: { params: { id: string } }) => {
   const landlord = await apiService.get(`/api/auth/${params.id}`);
   const userId = await getUserId();
 
-  console.log("asdasda", landlord);
-
   return (
     <main className="max-w-[1500px] mx-auto px-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

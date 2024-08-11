@@ -7,6 +7,7 @@ import MenuLink from "./MenuLink";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import LogoutButton from "../buttons/LogoutButton";
+import { useRouter } from "next/navigation";
 
 type ProfileNavProps = {
   userId: string | undefined;
@@ -16,6 +17,8 @@ const ProfileNav = ({ userId }: ProfileNavProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const loginModal = useLoginModal();
   const signupModal = useSignupModal();
+  const router = useRouter();
+
   return (
     <div className="p-2 relative inline-block border rounded-full">
       <button
@@ -46,7 +49,16 @@ const ProfileNav = ({ userId }: ProfileNavProps) => {
               />
             </>
           ) : (
-            <LogoutButton onClick={() => setIsOpen(false)} />
+            <>
+              <MenuLink
+                label="My properties"
+                onClick={() => {
+                  setIsOpen(false);
+                  router.push(`/my-properties`);
+                }}
+              />
+              <LogoutButton onClick={() => setIsOpen(false)} />
+            </>
           )}
         </div>
       )}
