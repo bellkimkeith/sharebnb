@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import PropertyItem from "./PropertyItem";
 import { cn } from "@/lib/utils";
 import apiService from "@/app/services/apiService";
+import { url } from "inspector";
 
 type UserType = {
+  id: string;
   name: string;
   avatar_url: string;
 };
@@ -22,16 +24,28 @@ export type PropertyType = {
   landlord: UserType;
 };
 
-const PropertiesList = ({ inOwnerPage }: { inOwnerPage?: boolean }) => {
+const PropertiesList = ({
+  inOwnerPage,
+  landlord_id,
+}: {
+  inOwnerPage?: boolean;
+  landlord_id?: string;
+}) => {
   const [properties, setProperties] = useState<PropertyType[]>([]);
 
   useEffect(() => {
     const getProperties = async () => {
-      const properties = await apiService.get("/api/properties/");
+      let url = "/api/properties/";
+
+      if (landlord_id) {
+        url += `?landlord_id=${landlord_id}`;
+      }
+
+      const properties = await apiService.get(url);
       setProperties(properties.data);
     };
     getProperties();
-  }, []);
+  }, [landlord_id]);
 
   return (
     <div

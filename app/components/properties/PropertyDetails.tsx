@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { PropertyType } from "./PropertiesList";
+import Link from "next/link";
 
 const PropertyDetails = ({ property }: { property: PropertyType }) => {
   return (
@@ -11,7 +12,10 @@ const PropertyDetails = ({ property }: { property: PropertyType }) => {
         {property.bathrooms} bathrooms
       </span>
       <hr />
-      <div className="py-6 flex items-center space-x-4">
+      <Link
+        href={`/owner/${property.landlord.id}`}
+        className="py-6 flex items-center space-x-4"
+      >
         {property.landlord.avatar_url && (
           <Image
             src={property.landlord.avatar_url}
@@ -24,7 +28,7 @@ const PropertyDetails = ({ property }: { property: PropertyType }) => {
         <span>
           <strong>{property.landlord.name}</strong> is your host
         </span>
-      </div>
+      </Link>
       <hr />
       <div className="mt-6 text-lg">{property.description}</div>
     </div>
